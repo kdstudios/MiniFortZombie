@@ -1,0 +1,11 @@
+# Mini Fort Zombie: notes for Claude
+- Read `ARCHITECTURE.md` first. It has the file map, the "where do I look for..." index, files never to open, and the wrapper-chain table.
+- To catch up, read only the latest `docs/CHANGES_v0xx.md`, not older ones.
+- Never open `js/vendor/`, `js/data/*` (except grepping `fzcfg.js` for a key), `js/modern/propkit.js` or `js/modern/retro50.js` (it's generated; edit `tools/retro50_src/`).
+- Before changing a core function, check the wrapper table: a later layer may replace it.
+- Each change: tag the code comment `vNNN:`, write `docs/CHANGES_vNNN.md`, bump `VERSION` (`js/game/core/01_items.js`) and the version in `index.html` (title + 2 labels). Run Prettier on the hand-written files you edited.
+- Gun sight changes: run `tools/arch/sightcheck.py`.
+- New full-block building: follow the `new-building` skill if it's installed. Otherwise: read `docs/FEATURES.md`, open only the sections it points to, copy the skeleton of `js/layers/church.js` and use `js/props/lotkit.js` (`LK`) for the plumbing. Never read a whole lot layer (1,200-2,100 lines each).
+- Lot coords: plot 40 x 36 m centred on 0, front = +Z, sidewalk at z ~17. In lot layers call the kit `LK`, not `L` (build code uses `L` for lengths).
+- **Dev Mode must never need touching** (v085). `js/game/devtoolkit.js` keeps no content lists: its `REG` object reads the game's registries live (`NEWCAT`, `FZ.cfg.zst` + `RZO`, `RSURV`, `MFZV.kinds`, `MFZPROP`, `RGPK.PF`, `RGFLORA.treeKinds()`, `WDEF`, `ITEMS`/`CATS`/`LOOT_TABLES`, `MZ`). New content only has to be registered in the game to appear in the Inspector, Spawn list and test worlds. Never add a hard-coded list to devtoolkit.js; if a new kind of content has no registry, add one in the game file and read it in `REG`. A new world-build pass goes in `WB.post` (Dev worlds run that list too). Check with Dev Mode > Diagnostics > *Registry sync report* and Building > Inspector > *Check every building*.
+- New lot `<script>` tags go after `js/layers/newlots.js` (so a lot replacing a placeholder keeps its town rules). Test with `python3 -I tools/arch/lotcheck.py . <id>`.
