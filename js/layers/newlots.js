@@ -231,7 +231,18 @@
   const picnic = (B, x, z) => {
     slab(B, x - 0.9, x + 0.9, z - 0.4, z + 0.4, 0.7, 0.78, 0x7a5a3a);
     for (const s of [-0.75, 0.75]) slab(B, x - 0.9, x + 0.9, z + s - 0.15, z + s + 0.15, 0.42, 0.48, 0x7a5a3a);
-    for (const s of [-0.7, 0.7]) deco(B, 0.08, 0.7, 1.6, x + s, 0.35, z, 0x5a4a3a);
+    // v101: A-frame ends (legs splay from under the table top out past the seats) with bearers under seats and top
+    for (const e of [-0.75, 0.75]) {
+      for (const s of [-1, 1]) {
+        const g = new THREE.Group();
+        g.position.set(x + e, 0.36, z + s * 0.5);
+        g.rotation.x = -s * 0.695;
+        B.g.add(g);
+        mesh(BX(0.08, 0.94, 0.08), 0x5a4a3a, 0, 0, 0, g);
+      }
+      deco(B, 0.08, 0.06, 1.56, x + e, 0.4, z, 0x5a4a3a);
+      deco(B, 0.08, 0.06, 0.5, x + e, 0.7, z, 0x5a4a3a);
+    }
     B.occ.push([x - 1, x + 1, z - 1, z + 1]);
   };
   const lampPost = (B, x, z) => {
@@ -392,7 +403,16 @@
         const gx = B.dx || 0;
         sandbags(B, -9.4, gx - 1.4, 9.2, 9.9);
         sandbags(B, gx + 1.4, 9.4, 9.2, 9.9);
-        for (let u = -9.6; u <= 9.6; u += 0.8) deco(B, 0.05, 0.05, 0.6, u, 1.15, 9.55, 0x9a9a9a);
+        // v101: the wire stakes were 0.6 m horizontal spikes hanging 0.25 m above the sandbags (floating bits all along the
+        // entrance); now upright posts standing on the sandbag line with two strands of wire between them
+        for (const [wa, wb] of [
+          [-9.4, gx - 1.4],
+          [gx + 1.4, 9.4]
+        ]) {
+          for (let u = wa; u <= wb + 0.01; u += (wb - wa) / Math.max(1, Math.round((wb - wa) / 1.6)))
+            deco(B, 0.05, 0.7, 0.05, u, 1.25, 9.55, 0x8a8a8a);
+          for (const wy of [1.1, 1.4]) deco(B, wb - wa, 0.015, 0.015, (wa + wb) / 2, wy, 9.55, 0x6a6a6a);
+        }
         sideSign(B, 'KEEP OUT', PK([-5, 4]), 2.2, 7.25, 2.4, 0.6, '#5a4a3a', '#e8e8e8', 'bold 60px Impact');
         slab(B, -7, -5, -14, -12.6, 0, 1.1, 0x3a5a3a);
         cyl(B, 0.35, 1, 6, 0.5, -10, 0x4a6a8a, true, 10);
@@ -1176,7 +1196,7 @@
 
   function forestBase(x, z, t) {
     const B = yard(x, z, t, 'forest');
-    flatM(38, 34, 0x2e4226, 0, 0.02, 0, B.g);
+    flatM(38, 32.85, 0x2e4226, 0, 0.02, -0.575, B.g);
     // v090: each ground patch on its own height (they overlapped at one height and z-fought), all well under the paths
     for (let i = 0; i < 26; i++)
       flatM(
@@ -1375,7 +1395,7 @@
   }
   function bAidStation(x, z, t) {
     const B = yard(x, z, t, 'aid');
-    flatM(38, 34, 0x4c4e52, 0, 0.02, 0, B.g);
+    flatM(38, 32.85, 0x4c4e52, 0, 0.02, -0.575, B.g);
     PR.stalls(B, -16, 12, -3, 3, 2.8);
     const W = 18.8,
       F = 16.8;
@@ -1467,8 +1487,8 @@
 
   function bFieldHospital(x, z, t) {
     const B = yard(x, z, t, 'park');
-    flatM(38, 34, 0x4f6e36, 0, 0.02, 0, B.g);
-    flatM(3, 34, 0x8a8270, 0, 0.03, 0, B.g);
+    flatM(38, 32.85, 0x4f6e36, 0, 0.02, -0.575, B.g);
+    flatM(3, 32.85, 0x8a8270, 0, 0.03, -0.575, B.g);
     perimChain(B, 18.8, 16.8, [-2.6, 2.6]);
     sideSign(B, 'FIELD HOSPITAL - TRIAGE AT GATE', 0, 2.8, 16.9, 6.4, 0.6, '#f4f4f0', '#c81e1e', 'bold 40px Arial');
     deco(B, 0.12, 2.4, 0.12, -3.2, 1.2, 16.9, 0x555555);
@@ -1530,7 +1550,7 @@
   const cab = (B, x, z, ry) => veh(B, 'taxi', x, z, ry);
   function bCabDepot(x, z, t) {
     const B = yard(x, z, t, 'cab');
-    flatM(38, 34, 0x4c4e52, 0, 0.02, 0, B.g);
+    flatM(38, 32.85, 0x4c4e52, 0, 0.02, -0.575, B.g);
     PR.stalls(B, -16, 11, -1, 6, 2.8);
     PR.stalls(B, -16, 11, 8, 14, 2.8);
     const W = 18.8,
@@ -1631,8 +1651,8 @@
   }
   function bNursery(x, z, t) {
     const B = yard(x, z, t, 'nursery');
-    flatM(38, 34, 0x8a8270, 0, 0.02, 0, B.g);
-    flatM(3, 34, 0x9a9a92, 0, 0.025, 0, B.g);
+    flatM(38, 32.85, 0x8a8270, 0, 0.02, -0.575, B.g);
+    flatM(3, 32.85, 0x9a9a92, 0, 0.025, -0.575, B.g);
     railFence(B, -19.2, 19.2, 17.2, 17.2, [[-2.4, 2.4]]);
     chain(B, -18.8, -18.8, -16.8, 16.8, 1.6);
     chain(B, 18.8, 18.8, -16.8, 16.8, 1.6);
@@ -1742,7 +1762,7 @@
   }
   function bSkatepark(x, z, t) {
     const B = yard(x, z, t, 'skate');
-    flatM(38, 34, 0xa0a09a, 0, 0.02, 0, B.g);
+    flatM(38, 32.85, 0xa0a09a, 0, 0.02, -0.575, B.g);
     for (let i = 0; i < 10; i++)
       flatM(rnd(1, 3), rnd(0.6, 2), PK([0x8a8a86, 0x7a7a76]), rnd(-16, 16), 0.025, rnd(-14, 14), B.g, rnd(0, 3));
     perimChain(B, 18.8, 16.8, [-2.4, 2.4]);
@@ -1812,14 +1832,17 @@
     return function (x, z, t) {
       const B = yard(x, z, t, dead ? 'deadpark' : 'park'),
         G = dead ? 0x5a5a38 : 0x3f7a2f;
-      flatM(38, 34, G, 0, 0.02, 0, B.g);
+      flatM(38, 32.85, G, 0, 0.02, -0.575, B.g);
       const W = 18.6,
         F = 16.6;
-      railFence(B, -W, W, F, F, [[-2.4, 2.4]]);
+      // v101: the ground, paths and front fence stop at the pavement kerb (z 15.9); they used to run on to z 17 over the
+      // sidewalk (z-fighting hatching where the path met it)
+      const FF = 15.4;
+      railFence(B, -W, W, FF, FF, [[-2.4, 2.4]]);
       railFence(B, -W, W, -F, -F, [[-2.4, 2.4]]);
-      railFence(B, -W, -W, -F, F, [[-2, 2]]);
-      railFence(B, W, W, -F, F, [[-2, 2]]);
-      flatM(3, 34, dead ? 0x7a7060 : 0x9a927f, 0, 0.03, 0, B.g);
+      railFence(B, -W, -W, -F, FF, [[-2, 2]]);
+      railFence(B, W, W, -F, FF, [[-2, 2]]);
+      flatM(3, 32.85, dead ? 0x7a7060 : 0x9a927f, 0, 0.03, -0.575, B.g);
       flatM(38, 3, dead ? 0x7a7060 : 0x9a927f, 0, 0.03, 0, B.g);
       const px = -9.5,
         pz = -8;

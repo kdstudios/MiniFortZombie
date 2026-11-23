@@ -44,7 +44,7 @@
     RU = 4.5, // back rooms divider (store u 0..RU, back room u RU..9)
     TU = 6.8, // customer toilet: u TU..9
     TZ = 5.8, // customer toilet: z PZ..TZ
-    CZ = 4.4, // counter centre line
+    CZ = 4.8, // counter centre line (v101: was 4.4; the staff aisle behind it was 0.73 m, now 1.13 m)
     CU0 = 1.6, // counter runs u CU0..TU (the gap by the party wall leads to the kitchen door)
     CU1 = TU;
   const U_FRONT = [
@@ -922,14 +922,16 @@
       b.box(0.08, 0.1, 0.04, K.mat(0xc8a030, 0.3, 0.8), [-1.6, 0.6, -12.03], null, 0);
       S(-2.25, -0.95, -12.75, -12.05, 0, 0.9, true);
       // graffiti tag on the back wall
+      // v101: moved from x -1.2 (it spanned the back door, so the opening door swept through it) to the clear wall
+      // left of the flue, smaller
       b.label(
-        2.4,
-        0.9,
+        1.9,
+        0.71,
         decal('kw_tag', [
           ['DONT EAT', 'bold 80px ' + IMPACT, '#3ad05a', 90],
           ['THE BALLS', 'bold 80px ' + IMPACT, '#e83ad0', 180]
         ]),
-        [-1.2, 1.3, Z0 - 0.19],
+        [-7.95, 1.3, Z0 - 0.19],
         [0, PI, 0]
       );
       // weeds along the fence bases and the back wall
@@ -1101,13 +1103,13 @@
       pc(u0, u1, y0, Math.min(y1, 1.2), quilt, 0.012, 0.006);
       if (y1 > 1.32) pc(u0, u1, Math.max(y0, 1.32), y1, cream, 0.012, 0.006);
       if (y0 < 1.32 && y1 > 1.2) pc(u0, u1, 1.2, 1.32, redB, 0.03, 0.015);
-      if (y1 > 2.7) pc(u0, u1, Math.max(y0, 2.7), y1, redB, 0.016, 0.008);
+      if (y1 > 2.7) pc(u0, u1, Math.max(y0, 2.7), y1, redB, 0.03, 0.015); // v101: was 0.016 / 0.008, 4 mm proud of the cream = z-fighting
     };
     const nwSpan = (pc, u0, u1, y0, y1) => {
       pc(u0, u1, y0, Math.min(y1, 1.0), panelW, 0.02, 0.01);
       if (y1 > 1.06) pc(u0, u1, Math.max(y0, 1.06), Math.min(y1, 2.7), cream, 0.012, 0.006);
       if (y0 < 1.06 && y1 > 1.0) pc(u0, u1, 1.0, 1.06, goldP, 0.035, 0.018);
-      if (y1 > 2.7) pc(u0, u1, Math.max(y0, 2.7), y1, redB, 0.016, 0.008);
+      if (y1 > 2.7) pc(u0, u1, Math.max(y0, 2.7), y1, redB, 0.03, 0.015); // v101: was 0.016 / 0.008, 4 mm proud of the cream = z-fighting
     };
     const kitSpan = (pc, u0, u1, y0, y1) => {
       pc(u0, u1, y0, Math.min(y1, 2.0), kitTile, 0.012, 0.006);
@@ -1402,33 +1404,38 @@
           // drinks cooler on the outer wall
           const cu = 8.5,
             cz = 7.4; // v089: was 6.9 (in front of the toilet door)
-          rb(0.75, 2.0, 0.85, 0.02, K.mat(0x1a1a1c, 0.5), [X(cu), 1.0, cz]);
-          b.box(0.02, 1.6, 0.7, K.glass(0xd8eef4, 0.25), [X(cu - 0.385), 1.05, cz], null, 0);
-          b.box(
-            0.01,
-            1.55,
-            0.66,
-            K.mat(0xe8f0ff, 0.5, 0, {emissive: 0xc8d8ff, emissiveIntensity: 0.35}),
-            [X(cu + 0.3), 1.05, cz],
-            null,
-            0
-          );
-          for (let k = 0; k < 4; k++)
+          // v101: the cooler is now a hollow cabinet (it was a solid black block with the bottles buried inside it and a
+          // glass pane sharing a plane with the body and the label = flicker). Open front behind a glass door, lit shelves.
+          const dk = K.mat(0x1a1a1c, 0.5),
+            F = cu - 0.375, // front plane (u)
+            sh = K.mat(0xc8ccd0, 0.35, 0.7);
+          b.box(0.04, 2.0, 0.85, dk, [X(cu + 0.355), 1.0, cz], null, 0.005); // back
+          for (const k of [-1, 1]) b.box(0.75, 2.0, 0.04, dk, [X(cu), 1.0, cz + k * 0.405], null, 0.005); // sides
+          b.box(0.75, 0.1, 0.85, dk, [X(cu), 0.05, cz], null, 0.005); // plinth
+          b.box(0.75, 0.1, 0.85, dk, [X(cu), 1.95, cz], null, 0.005); // top
+          b.box(0.06, 0.28, 0.77, dk, [X(F + 0.03), 1.81, cz], null, 0.005); // header box
+          b.box(0.01, 1.55, 0.66, K.mat(0xe8f0ff, 0.5, 0, {emissive: 0xe0eaff, emissiveIntensity: 0.9}), [X(cu + 0.325), 1.0, cz], null, 0); // lit back panel
+          for (let k = 0; k < 4; k++) {
+            const sy = 0.3 + k * 0.38;
+            b.box(0.6, 0.02, 0.74, sh, [X(cu - 0.02), sy, cz], null, 0);
             for (let i = 0; i < 5; i++)
               b.cyl(
                 0.035,
                 0.035,
-                0.12,
+                0.2,
                 K.mat([0xc4141c, 0x1a5ac8, 0xe8c020, 0x2a9a3a][(i + k) % 4], 0.3, 0.5),
-                [X(cu - 0.15), 0.42 + k * 0.38, cz - 0.26 + i * 0.13],
+                [X(cu - 0.05), sy + 0.11, cz - 0.28 + i * 0.14],
                 null,
                 8
               );
+          }
+          b.box(0.012, 1.5, 0.7, K.glass(0xd8eef4, 0.18), [X(F + 0.012), 0.92, cz], null, 0); // glass door
+          b.box(0.03, 1.56, 0.03, chrome, [X(F + 0.0), 0.92, cz - 0.31], null, 0); // door handle bar
           b.label(
             0.7,
             0.18,
             strapMat('kb_cool', 'ICE COLD DRINKS', 'bold 40px ' + SANS, RED, '#fff', 512, 112),
-            [X(cu - 0.39), 1.9, cz],
+            [X(F - 0.004), 1.82, cz],
             [0, -s * (PI / 2), 0]
           );
           S(...xr(s, cu - 0.4, 8.85), cz - 0.45, cz + 0.45, 0, 2.0);

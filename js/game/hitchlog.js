@@ -869,7 +869,7 @@
   }
   function autoGrab(r) {
     const t = now();
-    if (r.hid || r.dt > 3000 || r.busy || t - autoAt < 4000 || autoN >= 25) return;
+    if (!window.bugReportOn || !window.bugReportOn() || r.hid || r.dt > 3000 || r.busy || t - autoAt < 4000 || autoN >= 25) return;
     autoAt = t;
     autoN++;
     const ms = r.dt;
@@ -918,8 +918,16 @@
     } catch (e) {}
     return txt.length;
   }
+  /* v101: bug-report hotkeys (F7/F9/F10) and the automatic hitch grabs are off unless Options > Bug Report is ticked. */
+  window.bugReportOn = function () {
+    try {
+      return localStorage.getItem('mfz_bugrep') === '1';
+    } catch (e) {
+      return false;
+    }
+  };
   addEventListener('keydown', e => {
-    if (e.repeat) return;
+    if (e.repeat || !window.bugReportOn()) return;
     if (e.code === 'F7') {
       e.preventDefault();
       runExp();

@@ -406,12 +406,17 @@
     for (const [a0, a1, ops] of BACKRUNS)
       skin(1, Z0, a0 - (a0 === X0 ? 0.15 : 0), a1 + (a1 === X1 ? 0.15 : 0), -1, ops, grey);
     // dark plinth band all round
-    b.box(X1 - X0 + 0.36, 0.35, 0.04, dark, [0, 0.175, Z1 + 0.19], null, 0);
+    // v101: the front run is split at the sliding doors (it ran straight across the doorway as a 35 cm dark step)
+    for (const [pa, pb] of [
+      [X0 - 0.18, -1.3],
+      [1.3, X1 + 0.18]
+    ])
+      b.box(pb - pa, 0.35, 0.04, dark, [(pa + pb) / 2, 0.175, Z1 + 0.19], null, 0);
     for (const s of [-1, 1]) b.box(0.04, 0.35, Z1 - Z0, dark, [s * (X1 + 0.19), 0.175, (Z0 + Z1) / 2], null, 0);
     // shutter bay header (render outside, steel lintel, yellow jamb guards)
     b.box(BAY[1], H - BH, 0.3, grey, [BAY[0], (H + BH) / 2, Z0], null, 0);
     b.box(BAY[1] + 0.1, 0.2, 0.34, K.mat(0x4a4c50, 0.45, 0.6), [BAY[0], BH + 0.1, Z0], null, 0);
-    for (const s of [-1, 1]) b.box(0.14, BH, 0.36, yel, [BAY[0] + s * (BAY[1] / 2 + 0.07), BH / 2, Z0], null, 0.01);
+    for (const s of [-1, 1]) b.box(0.16, BH, 0.42, yel, [BAY[0] + s * (BAY[1] / 2 + 0.06), BH / 2, Z0], null, 0.01); // v101: proud of the wall end face (z-fighting stripe)
     // shopfront: dark aluminium frames, a continuous transom and stall riser
     for (const w of FRONT.filter(p => p.k === 'w')) {
       b.box(1.62, 0.07, 0.16, cop, [w.c, 0.9, Z1 + 0.22], null, 0.01);

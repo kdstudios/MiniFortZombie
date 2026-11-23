@@ -689,8 +689,9 @@
 
     /* ---------- the giant pizza slice on the roof: a tilted wedge on a steel frame ---------- */
     {
-      const sx = 2.6,
-        sz = 1.5,
+      // v101: moved from (2.6, 1.5) to the middle of the roof near the front (frame legs and the collider follow sx / sz)
+      const sx = 0,
+        sz = 4.2,
         sy = H + 1.2;
       const cheese = K.mat(0xf2b830, 0.55),
         sauce = K.mat(0xc8402a, 0.6),

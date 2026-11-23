@@ -112,8 +112,8 @@
   }
   function drawLogo(c, W, H) {
     c.clearRect(0, 0, W, H);
-    const r = H * 0.085,
-      s = 'GUTTER MINDS',
+    const s = 'GUTTER MINDS',
+      r = Math.min(H * 0.085, (W * 0.94) / ((s.length - 1) * 2.05 + 2.16)), // v101: was H * 0.085 only: the 12 discs were wider than the canvas and the end letters were cut off
       x0 = W / 2 - ((s.length - 1) * r * 2.05) / 2;
     drawPin(c, W * 0.62, H * 0.36, H * 0.62, 0.45);
     drawPin(c, W * 0.72, H * 0.42, H * 0.55, 0.8);

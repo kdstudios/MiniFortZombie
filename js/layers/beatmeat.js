@@ -199,7 +199,7 @@
       c.textAlign = 'center';
       c.textBaseline = 'middle';
       c.font = 'bold 92px ' + SERIF;
-      c.fillText('BEAT THE MEAT', W / 2, 74);
+      c.fillText('BEAT THE MEAT', W / 2, 74, 700); // v101: maxWidth keeps the name clear of the cleavers
       c.font = 'bold 40px ' + SANS;
       c.fillText('B U T C H E R S', W / 2, 146);
       drawCleaver(c, 92, 96, 1.0, -0.5, CREAM);
@@ -217,10 +217,10 @@
         c.textAlign = 'center';
         c.textBaseline = 'middle';
         c.font = 'bold 86px ' + IMPACT;
-        c.fillText('SOYLENT GREENS', W / 2 + 40, 70);
+        c.fillText('SOYLENT GREENS', W / 2 + 40, 70, 740); // v101: maxWidth keeps the name clear of the leaf
         c.fillStyle = '#7ad07a';
         c.font = 'bold 40px ' + SANS;
-        c.fillText("VEGAN BUTCHERS · IT'S NOT PEOPLE", W / 2 + 40, 146);
+        c.fillText("VEGAN BUTCHERS · IT'S NOT PEOPLE", W / 2 + 40, 146, 780);
         drawLeaf(c, 92, 96, 1.4, '#3a9a4a');
       },
       {glow: 0.35}
@@ -453,7 +453,7 @@
         bm = s < 0;
       rb(fw + 0.1, 0.8, 0.26, 0.02, bm ? redP : blackP, [cx, FAS + 0.42, Z1 + 0.28]);
       b.label(fw - 0.2, (fw - 0.2) * (192 / 1024), bm ? btmFascia() : sgFascia(), [cx, FAS + 0.42, Z1 + 0.415]);
-      b.box(fw + 0.3, 0.1, 0.4, bm ? creamM : blackP, [cx, FAS + 0.86, Z1 + 0.3], null, 0.01); // cornice
+      b.box(fw + 0.3, 0.1, 0.4, bm ? creamM : blackP, [cx, FAS + 1.36, Z1 + 0.3], null, 0.01); // cornice (v101: raised from FAS+0.86 to sit above the 1.76 m tall sign; it used to cut across the lettering)
       // awning: sloped striped cloth on steel arms, a scalloped valance along the front
       const AW = fw - 0.2,
         AD = 1.5,

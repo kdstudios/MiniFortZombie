@@ -45,7 +45,7 @@ function mmCtx() {
   _mmT = n;
   return $('mm').getContext('2d');
 }
-const VERSION = '100';
+const VERSION = '101';
 const ZSPD = 0.9; // v072: every zombie moves 10% slower than v071
 const TAU = Math.PI * 2,
   $ = id => document.getElementById(id),

@@ -210,8 +210,8 @@
         ],
         '#c9d4ff'
       );
-      P.text(c, 'THE', 268, 58, {size: 34, col: '#fff', font: SANS, weight: 'bold'});
-      P.text(c, 'FINAL LOAD', W / 2 + 40, 74, {size: 92, col: '#fff', font: SANS, weight: 'bold', max: 560});
+      P.text(c, 'THE', 236, 52, {size: 34, col: '#fff', font: SANS, weight: 'bold'});
+      P.text(c, 'FINAL LOAD', W / 2 + 52, 74, {size: 92, col: '#fff', font: SANS, weight: 'bold', max: 540}); // v101: nudged right so 'THE' sits clear of the F
       P.text(c, 'LAUNDROMAT', 820, 126, {size: 26, col: '#fff', font: SANS, weight: 'bold'});
     });
   // Get Nailed fascia: white panel, pink lettering
@@ -453,11 +453,7 @@
         ),
         [-0.3, 2.05, Z1 + 0.2]
       );
-      b.label(1.0, 0.22, decal('fl_door', [['THE FINAL LOAD', 'bold 46px ' + SANS, '#ffffff', 0.5]], 512, 112), [
-        -3.95,
-        1.75,
-        Z1 + 0.24
-      ]);
+      // v101: the 'THE FINAL LOAD' text on the sliding doors was removed
       // a light box over the vending bay
       b.box(2.0, 0.3, 0.16, dark, [-7.9, 2.6, Z1 + 0.25], null, 0.02);
       b.label(

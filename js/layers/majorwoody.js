@@ -480,8 +480,14 @@
       skin(1, GZ0, a0 - (a0 === GX0 ? 0.15 : 0), a1 + (a1 === GX1 ? 0.15 : 0), -1, [], GH, gplinth, blk, 0.3);
     b.box(GB[1], GH - BH, 0.3, blk, [GB[0], (GH + BH) / 2, GZ0], null, 0); // bay header
     // a brick soldier course along the top of the plinth
-    b.box(X1 - X0 + 0.36, 0.08, 0.06, cop, [0, SILL, Z1 + 0.2], null, 0);
-    for (const s of [-1, 1]) b.box(0.06, 0.08, Z1 - Z0 + 0.3, cop, [s * (X1 + 0.2), SILL, (Z0 + Z1) / 2], null, 0);
+    // v101: split at the front door (it ran straight across the doorway as a bar at knee height) and 4 cm thick instead of
+    // 8 mm so its top does not z-fight the window sill boxes (their top face was 5 mm below it)
+    for (const [pa, pb] of [
+      [X0 - 0.18, -0.75],
+      [0.75, X1 + 0.18]
+    ])
+      b.box(pb - pa, 0.14, 0.06, cop, [(pa + pb) / 2, SILL, Z1 + 0.2], null, 0);
+    for (const s of [-1, 1]) b.box(0.06, 0.14, Z1 - Z0 + 0.3, cop, [s * (X1 + 0.2), SILL, (Z0 + Z1) / 2], null, 0);
 
     // window frames (dark aluminium) and sills; door frame
     for (const w of FRONT.filter(p => p.k === 'w')) {
@@ -655,7 +661,8 @@
     rb(GB[1] + 0.3, 0.5, 0.5, 0.06, K.mat(0x6a7058, 0.45, 0.5), [GB[0], BH + 0.28, GZ0 - 0.4]);
     for (const s of [-1, 1]) {
       b.box(0.1, BH, 0.14, K.mat(0x4a4e44, 0.4, 0.6), [GB[0] + s * (GB[1] / 2 - 0.03), BH / 2, GZ0 - 0.24], null, 0);
-      b.box(0.14, 1.2, 0.36, yel, [GB[0] + s * (GB[1] / 2 + 0.07), 0.6, GZ0], null, 0.01);
+      // v101: 16 mm into the opening and 42 mm deep: its inner face was exactly in the plane of the wall's end face (z-fighting stripe)
+      b.box(0.16, 1.2, 0.42, yel, [GB[0] + s * (GB[1] / 2 + 0.06), 0.6, GZ0], null, 0.01);
     }
     b.box(GB[1] - 0.1, 0.08, 0.08, K.mat(0x5a604a, 0.4, 0.6), [GB[0], BH - 0.06, GZ0 - 0.25], null, 0);
     b.box(2.8, 0.42, 0.04, oliveM, [GB[0], GH - 0.28, GZ0 - 0.2], null, 0);
@@ -931,7 +938,7 @@
     counter(-1.6, 2.4, 7.3, 8.0);
     counter(1.7, 2.4, 6.2, 7.3);
     // knives and compasses under glass on the counter, a stack of field manuals, a bell
-    b.box(0.9, 0.2, 0.5, K.glass(0xd8eef0, 0.3), [-0.8, 1.07, 7.65], null, 0);
+    b.box(0.9, 0.2, 0.5, K.glass(0xd8eef0, 0.3), [-0.8, 1.08, 7.65], null, 0); // v101: lifted 1 cm (its base shared the counter top plane)
     for (let i = 0; i < 4; i++) b.box(0.18, 0.02, 0.04, steel, [-1.1 + i * 0.2, 0.99, 7.65], [0, 0.3, 0], 0);
     for (let i = 0; i < 4; i++)
       b.box(
@@ -985,7 +992,9 @@
       b.push([x, 0, z], [0, a || 0, 0]);
       b.box(w, h, d, crateW, [0, h / 2, 0], null, 0.01);
       b.label(w * 0.8, h * 0.55, stencil, [0, h * 0.55, d / 2 + 0.006]);
-      for (const s of [-1, 1]) b.box(0.06, h, d + 0.02, K.veneer(0x5a3e22), [s * (w / 2 - 0.03), h / 2, 0], null, 0);
+      // v101: side boards stand 1 cm proud and 2 cm taller (they shared their outer and top faces with the crate = z-fighting)
+      for (const s of [-1, 1])
+        b.box(0.06, h + 0.02, d + 0.02, K.veneer(0x5a3e22), [s * (w / 2 - 0.02), h / 2 + 0.01, 0], null, 0);
       b.pop();
       const c = Math.abs(Math.cos(a || 0)) > 0.7,
         hw = (c ? w : d) / 2 + 0.03,
@@ -1046,7 +1055,7 @@
     // the counter (an L: along Z, then a return to the toilet-side wall) with the clerk behind it
     counter(-0.9, -0.2, -0.2, 3.4);
     counter(-0.2, 0.9, 2.8, 3.4);
-    b.box(0.4, 0.25, 0.5, K.glass(0xd8eef0, 0.3), [-0.55, 1.1, 1.0], null, 0);
+    b.box(0.4, 0.25, 0.5, K.glass(0xd8eef0, 0.3), [-0.55, 1.11, 1.0], null, 0);
     for (let i = 0; i < 3; i++) rb(0.14, 0.09, 0.08, 0.01, oliveM, [-0.55, 1.03, 0.82 + i * 0.16]);
     // back bar along the partition: boxed rounds on a short shelf
     b.box(0.45, 1.5, 2.0, shelfW, [XA - 0.35, 0.75, 3.95], null, 0);

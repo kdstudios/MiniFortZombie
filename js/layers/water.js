@@ -1238,7 +1238,6 @@ void main() {
           0.035 * k,
           y
         );
-    if (loud) sound({x, z}, 'wade', depth > 0.1);
   }
 
   /* ------------------------------------------ what disturbs the water ------------------------------------------ */
@@ -1302,6 +1301,18 @@ void main() {
     if (s.acc > 0.7) {
       s.acc = 0;
       stepSplash(x, z, w.y, sp, dx / dt, dz / dt, depth, isPlayer || Math.hypot(x - CAM.x, z - CAM.z) < 14);
+    }
+    /* v101: the wading SOUND now has its own, slower rhythm (every 1.9 m in the shallows, 2.4 m in deep water, and never closer
+       than 0.42 s). It used to ride on the 0.7 m visual splash, so at a walk it fired about six times a second. The drops and
+       ripples above still come every 0.7 m. */
+    s.snd = (s.snd || 0) + d;
+    if (s.snd > (depth > 0.1 ? 2.4 : 1.9)) {
+      const now = typeof performance !== 'undefined' ? performance.now() : 0;
+      if (now - (s.sndT || 0) > 420) {
+        s.snd = 0;
+        s.sndT = now;
+        if (isPlayer || Math.hypot(x - CAM.x, z - CAM.z) < 14) sound({x, z}, 'wade', depth > 0.1);
+      } else s.snd = 1.5; // too soon: try again a little later rather than skipping a whole stride
     }
   }
   function walkers(dt) {

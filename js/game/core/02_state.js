@@ -344,8 +344,15 @@ function optTab(t) {
   $('optS').classList.toggle('hide', t !== 'S');
   $('optI').classList.toggle('hide', t !== 'I');
   $('optK').classList.toggle('hide', t !== 'K');
+  $('optB').classList.toggle('hide', t !== 'B');
+  if (t === 'B') $('bugRepChk').checked = !!(window.bugReportOn && window.bugReportOn());
   if (t === 'I') icoList();
   if (t === 'K') kbRender();
+}
+function setBugReport(on) {
+  try {
+    localStorage.setItem('mfz_bugrep', on ? '1' : '0');
+  } catch (e) {}
 }
 function optBack() {
   if ($('optMain').classList.contains('hide')) optTab(null);

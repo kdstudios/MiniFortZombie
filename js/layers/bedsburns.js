@@ -401,7 +401,7 @@
     for (const [c, w] of BAYS) {
       b.box(w, H - BH, 0.3, clad, [c, (H + BH) / 2, Z0], null, 0);
       b.box(w + 0.1, 0.2, 0.34, K.mat(0x4a4c50, 0.45, 0.6), [c, BH + 0.1, Z0], null, 0);
-      for (const s of [-1, 1]) b.box(0.14, BH, 0.36, yel, [c + s * (w / 2 + 0.07), BH / 2, Z0], null, 0.01); // yellow jamb guards
+      for (const s of [-1, 1]) b.box(0.16, BH, 0.42, yel, [c + s * (w / 2 + 0.06), BH / 2, Z0], null, 0.01); // yellow jamb guards (v101: proud of the wall end face)
     }
     // window frames (dark aluminium), a mullion strip linking the shopfront glazing, sills
     for (const w of FRONT.filter(p => p.k === 'w')) {

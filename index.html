@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" href="./favicon.png" />
-    <title>Mini Fort Zombie: ThePizzaByte Edition v100</title>
+    <title>Mini Fort Zombie: ThePizzaByte Edition v101</title>
     <!-- three.js r147 (MIT) inlined: the Modern code needs it; replaces the r128 CDN tag -->
     <script src="js/vendor/three-r147.js"></script>
     <link rel="stylesheet" href="css/fonts.css" />
@@ -161,7 +161,7 @@
         <div class="zlSlot">
           <div class="press"><span class="blink">Press any key</span></div>
         </div>
-        <div class="ver verTxt">Version 100</div>
+        <div class="ver verTxt">Version 101</div>
       </div>
     </div>
 
@@ -185,7 +185,7 @@
             <i>04</i><span>Exit (Disabled)</span><small>Press F11 to leave Fullscreen</small>
           </button>
         </nav>
-        <div class="mmFoot"><span class="verTxt">Version 100</span></div>
+        <div class="mmFoot"><span class="verTxt">Version 101</span></div>
       </div>
       <blockquote class="mmQuote">
         &ldquo;It gets up and kills. The people it kills get up and <b>KILL!</b>&rdquo;
@@ -204,6 +204,7 @@
             <button class="mbtn" data-t="S" onclick="optTab('S')">Sound</button>
             <button class="mbtn" data-t="K" onclick="optTab('K')">Controls</button>
             <button class="mbtn" data-t="I" onclick="optTab('I')">Game Assets</button>
+            <button class="mbtn" data-t="B" onclick="optTab('B')">Bug Report</button>
             <button id="optDev" class="mbtn hide" onclick="devOpen()">Developer Toolkit</button>
             <button id="optQuit" class="mbtn hide" onclick="quitToMenu()">Quit to Main Menu</button>
           </nav>
@@ -283,6 +284,25 @@
               <div class="paneFoot">
                 <button onclick="kbDefaults()" class="warnBtn">Restore defaults</button
                 ><span id="kbMsg" class="m"></span>
+              </div>
+            </div>
+            <div id="optB" class="hide">
+              <div class="paneHead">
+                <h2>Bug Report</h2>
+                <p>Optional tools for recording performance problems to send in with a bug report.</p>
+              </div>
+              <div class="paneGrid one">
+                <div class="optRow">
+                  <label style="display: flex; gap: 10px; align-items: center; cursor: pointer">
+                    <input type="checkbox" id="bugRepChk" onchange="setBugReport(this.checked)" />
+                    <span>Enable bug reporting hotkeys</span>
+                  </label>
+                  <div class="note">
+                    When ticked: F7 runs a 12 second A/B experiment, F9 saves a report of the last 8 seconds, F10
+                    downloads the saved reports, and serious hitches are logged automatically. When unticked (the
+                    default) these keys do nothing. F6 and F8 are not affected.
+                  </div>
+                </div>
               </div>
             </div>
             <div id="optI" class="hide">
@@ -520,7 +540,7 @@
             <div class="cName">The Prison</div>
             <dl>
               <dt>Your health</dt>
-              <dd>100</dd>
+              <dd>101</dd>
               <dt>Zombie toughness</dt>
               <dd>&times;1.0</dd>
               <dt>Armoury</dt>
@@ -544,7 +564,7 @@
             <div class="cName">The School</div>
             <dl>
               <dt>Your health</dt>
-              <dd>100</dd>
+              <dd>101</dd>
               <dt>Zombie toughness</dt>
               <dd>&times;1.5</dd>
               <dt>Armoury</dt>

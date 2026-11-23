@@ -360,8 +360,17 @@
     skin(0, X1, Z0, Z1, 1, RIGHT, brk);
     // dark engineering-brick plinth and a band of buff headers at sill height
     const buff = K.mat(0xc8a878, 0.85);
-    b.box(X1 - X0 + 0.36, 0.3, 0.04, dark, [0, 0.15, Z1 + 0.19], null, 0);
-    b.box(X1 - X0 + 0.36, 0.3, 0.04, dark, [0, 0.15, Z0 - 0.19], null, 0);
+    // v101: both runs are split at the doors (they ran straight across the doorways as a 30 cm dark step that crates and
+    // debris then clipped into)
+    for (const [zf, gap] of [
+      [Z1 + 0.19, 1.3],
+      [Z0 - 0.19, 0.7]
+    ])
+      for (const [pa, pb] of [
+        [X0 - 0.18, -gap],
+        [gap, X1 + 0.18]
+      ])
+        b.box(pb - pa, 0.3, 0.04, dark, [(pa + pb) / 2, 0.15, zf], null, 0);
     for (const s of [-1, 1]) b.box(0.04, 0.3, Z1 - Z0, dark, [s * (X1 + 0.19), 0.15, (Z0 + Z1) / 2], null, 0);
     for (const [u0, u1] of [
       [X0 - 0.17, -7.25],

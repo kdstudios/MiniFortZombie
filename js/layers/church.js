@@ -851,8 +851,13 @@
       b.box(1.8, 0.06, 0.72, pt, [0, 0.74, 0], null, 0.01);
       for (const s of [-1, 1]) {
         b.box(1.8, 0.05, 0.28, pt, [0, 0.45, s * 0.6], null, 0.01);
-        b.box(0.07, 0.9, 0.07, pt, [0.8, 0.42, s * 0.25], [s * 0.45, 0, 0], 0);
-        b.box(0.07, 0.9, 0.07, pt, [-0.8, 0.42, s * 0.25], [s * 0.45, 0, 0], 0);
+        // v101: proper A-frame ends: each leg runs from under the table top out past the seat to the ground
+        // (it used to lean the wrong way and stop short of the seats), plus bearers under the seats and the top
+        for (const e of [0.8, -0.8]) b.box(0.07, 0.94, 0.07, pt, [e, 0.36, s * 0.5], [-s * 0.695, 0, 0], 0);
+      }
+      for (const e of [0.8, -0.8]) {
+        b.box(0.07, 0.06, 1.56, pt, [e, 0.4, 0], null, 0);
+        b.box(0.07, 0.06, 0.5, pt, [e, 0.7, 0], null, 0);
       }
       b.pop();
       S(x - 0.95, x + 0.95, z - 0.8, z + 0.8, 0, 0.78, true);
